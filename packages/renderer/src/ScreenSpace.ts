@@ -1,0 +1,3 @@
+export interface ScreenSpaceQuality{aoScale:number;ssrScale:number;volumetricScale:number;maxSsrSteps:number;aoSamples:number;fogSteps:number;}
+export const defaultScreenSpaceQuality:ScreenSpaceQuality={aoScale:.5,ssrScale:.5,volumetricScale:.25,maxSsrSteps:24,aoSamples:12,fogSteps:20};
+export function scaleScreenSpace(q:ScreenSpaceQuality,pressure:number):ScreenSpaceQuality{const p=Math.max(0,Math.min(1,pressure));return{aoScale:Math.max(.25,q.aoScale*(1-p*.4)),ssrScale:Math.max(.25,q.ssrScale*(1-p*.5)),volumetricScale:Math.max(.125,q.volumetricScale*(1-p*.45)),maxSsrSteps:Math.max(8,Math.round(q.maxSsrSteps*(1-p*.55))),aoSamples:Math.max(4,Math.round(q.aoSamples*(1-p*.55))),fogSteps:Math.max(8,Math.round(q.fogSteps*(1-p*.5)))};}

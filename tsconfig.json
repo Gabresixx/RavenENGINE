@@ -8,6 +8,8 @@
     { "path": "./packages/materials" },
     { "path": "./packages/animation" },
     { "path": "./packages/physics" },
+    { "path": "./packages/vfx" },
+    { "path": "./packages/audio" },
     { "path": "./packages/quality" },
     { "path": "./packages/engine" },
     { "path": "./apps/lab" }

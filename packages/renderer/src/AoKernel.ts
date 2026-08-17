@@ -1,0 +1,1 @@
+export function buildHemisphereKernel(samples=16):Float32Array{const out=new Float32Array(samples*3);for(let i=0;i<samples;i++){const u=(i+.5)/samples,v=((i*0.61803398875)%1),phi=2*Math.PI*v,z=u,x=Math.cos(phi)*Math.sqrt(1-z*z),y=Math.sin(phi)*Math.sqrt(1-z*z),scale=.1+.9*(u*u);out[i*3]=x*scale;out[i*3+1]=y*scale;out[i*3+2]=z*scale;}return out;}
