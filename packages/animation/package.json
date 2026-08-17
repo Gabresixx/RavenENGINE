@@ -1,1 +1,1 @@
-{"name":"@raven/animation","version":"0.0.1","type":"module","exports":"./src/index.ts"}
+{"name":"@raven/animation","version":"0.0.1","type":"module","exports":"./src/index.ts","dependencies":{"@raven/physics":"workspace:*"}}

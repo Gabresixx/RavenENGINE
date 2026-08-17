@@ -1,0 +1,3 @@
+import type{FootSide}from'./MotionField';import type{PredictedFootContact}from'./ContactPrediction';
+export interface PlantState{locked:boolean;position:[number,number,number];normal:[number,number,number];weight:number;}
+export class FootPlantSolver{readonly states:Record<FootSide,PlantState>={left:{locked:false,position:[0,0,0],normal:[0,1,0],weight:0},right:{locked:false,position:[0,0,0],normal:[0,1,0],weight:0}};update(side:FootSide,wantsPlant:boolean,contact:PredictedFootContact,dt:number):PlantState{const s=this.states[side];if(wantsPlant&&contact.valid&&!s.locked){s.locked=true;s.position=[...contact.position];s.normal=[...contact.normal];}if(!wantsPlant)s.locked=false;const target=s.locked?1:0;s.weight+= (target-s.weight)*(1-Math.exp(-18*dt));return s;}}

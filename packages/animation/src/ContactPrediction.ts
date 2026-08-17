@@ -1,0 +1,3 @@
+import type{ContactWorld}from'@raven/physics';import type{FootSide}from'./MotionField';
+export interface PredictedFootContact{side:FootSide;position:[number,number,number];normal:[number,number,number];materialId:number;distance:number;valid:boolean;}
+export class FootContactPredictor{constructor(readonly contacts:ContactWorld){}predict(side:FootSide,origin:[number,number,number],maxDrop=.9):PredictedFootContact{const hit=this.contacts.raycast({origin,dir:[0,-1,0],maxDistance:maxDrop});if(!hit)return{side,position:[origin[0],origin[1]-maxDrop,origin[2]],normal:[0,1,0],materialId:0,distance:maxDrop,valid:false};return{side,position:hit.point,normal:hit.normal,materialId:hit.materialId,distance:hit.distance,valid:true};}}

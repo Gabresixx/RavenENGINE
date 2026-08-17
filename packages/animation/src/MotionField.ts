@@ -1,11 +1,6 @@
-import type { MotionIntent } from './MotionIntent';
-export interface MotionPhase { leftFoot:number; rightFoot:number; stride:number; pelvisHeight:number; pelvisYaw:number; shoulderCounter:number; }
+import type{MotionIntent}from'./MotionIntent';import{parabola01,remap01,smoother01,pulse}from'./Curves';
+export type FootSide='left'|'right';export interface FootPhase{phase:number;planted:boolean;lift:number;advance:number;heelStrike:number;toeOff:number;weight:number;}
+export interface MotionPhase{left:FootPhase;right:FootPhase;support:FootSide;stride:number;pelvisHeight:number;pelvisYaw:number;pelvisRoll:number;shoulderCounter:number;cadenceHz:number;}
 const fract=(x:number)=>x-Math.floor(x);
-export class ProceduralMotionField {
-  phase=0;
-  sample(intent:MotionIntent,dt:number):MotionPhase{
-    const speed=Math.hypot(intent.desiredVelocity[0],intent.desiredVelocity[2]);const strideRate=1.25+speed*0.55;this.phase=fract(this.phase+dt*strideRate);
-    const l=this.phase,r=fract(this.phase+0.5);const wave=(p:number)=>Math.sin(p*Math.PI*2);
-    return{leftFoot:wave(l),rightFoot:wave(r),stride:Math.min(1,speed/4),pelvisHeight:-Math.abs(Math.sin(this.phase*Math.PI*2))*0.025,pelvisYaw:wave(this.phase)*0.055,shoulderCounter:-wave(this.phase)*0.07};
-  }
-}
+function footPhase(phase:number):FootPhase{const p=fract(phase),contactEnd=.56,planted=p<contactEnd;let lift=0,advance=0,weight=0;if(planted){const u=remap01(p,0,contactEnd);advance=.5-u;weight=1-pulse(p,.44,.53,.61)*.7;}else{const u=remap01(p,contactEnd,1);lift=parabola01(u);advance=-.5+smoother01(u);weight=.08;}return{phase:p,planted,lift,advance,heelStrike:pulse(p,0,.035,.11),toeOff:pulse(p,.46,.55,.63),weight};}
+export class ProceduralMotionField{phase=0;private support:FootSide='left';sample(intent:MotionIntent,dt:number):MotionPhase{const speed=Math.hypot(intent.desiredVelocity[0],intent.desiredVelocity[2]);const stride=Math.min(1,speed/4.6);const cadenceHz=.78+Math.pow(stride,.72)*1.55;this.phase=fract(this.phase+dt*cadenceHz);const left=footPhase(this.phase),right=footPhase(fract(this.phase+.5));if(left.planted&&left.weight>right.weight)this.support='left';else if(right.planted&&right.weight>left.weight)this.support='right';const weightSum=Math.max(.001,left.weight+right.weight),weightBias=(right.weight-left.weight)/weightSum;const airborne=(left.lift+right.lift)*.5;return{left,right,support:this.support,stride,pelvisHeight:-.018*stride-.035*airborne*stride,pelvisYaw:(right.advance-left.advance)*.075*stride,pelvisRoll:weightBias*.045*stride,shoulderCounter:(left.advance-right.advance)*.09*stride,cadenceHz};}}
