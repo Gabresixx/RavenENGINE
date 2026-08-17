@@ -1,0 +1,4 @@
+import{DeterministicRng}from'@raven/core';
+export interface HistoryState{abandonment:number;waterDamage:number;structuralDamage:number;vegetation:number;humanOccupation:number;conflict:number;}
+export interface HistorySeed{seed:number;ageYears:number;rainfall:number;occupationPressure:number;conflictPressure:number;}
+export function simulateWorldHistory(s:HistorySeed):HistoryState{const r=new DeterministicRng(s.seed);const abandonment=Math.min(1,s.ageYears/25);const waterDamage=Math.min(1,abandonment*s.rainfall*(.65+r.range(.1,.35)));const structuralDamage=Math.min(1,waterDamage*.55+abandonment*.3+r.range(0,.18));const vegetation=Math.min(1,abandonment*s.rainfall*(1-structuralDamage*.2)+r.range(0,.1));const humanOccupation=Math.min(1,s.occupationPressure*(.3+.7*(1-structuralDamage)));const conflict=Math.min(1,s.conflictPressure*(.4+.6*humanOccupation));return{abandonment,waterDamage,structuralDamage,vegetation,humanOccupation,conflict};}

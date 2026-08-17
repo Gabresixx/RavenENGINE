@@ -1,0 +1,2 @@
+export interface TemporalFrame<T>{value:T;frame:number;width:number;height:number;}
+export class TemporalHistory<T>{private previous?:TemporalFrame<T>;commit(value:T,frame:number,width:number,height:number):void{this.previous={value,frame,width,height};}get(frame:number,width:number,height:number,maxAge=2):T|undefined{const p=this.previous;if(!p||frame-p.frame>maxAge||p.width!==width||p.height!==height)return;return p.value;}invalidate():void{this.previous=undefined;}}

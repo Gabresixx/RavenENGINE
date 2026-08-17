@@ -1,0 +1,2 @@
+export type EventMap=Record<string,unknown>;
+export class EventBus<T extends EventMap=EventMap>{private listeners=new Map<keyof T,Set<(payload:any)=>void>>();on<K extends keyof T>(type:K,fn:(payload:T[K])=>void):()=>void{let set=this.listeners.get(type);if(!set){set=new Set();this.listeners.set(type,set);}set.add(fn as any);return()=>set!.delete(fn as any);}emit<K extends keyof T>(type:K,payload:T[K]):void{for(const fn of this.listeners.get(type)??[])fn(payload);}clear():void{this.listeners.clear();}}

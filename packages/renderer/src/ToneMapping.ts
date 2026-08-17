@@ -1,0 +1,1 @@
+export const ravenToneMapGlsl=`vec3 ravenACES(vec3 x){const float a=2.51,b=.03,c=2.43,d=.59,e=.14;return clamp((x*(a*x+b))/(x*(c*x+d)+e),0.0,1.0);} vec3 ravenGrade(vec3 c,float exposure){c*=exp2(exposure);c=ravenACES(c);return pow(c,vec3(1.0/2.2));}`;

@@ -1,0 +1,3 @@
+import{MeshBuilder}from'./MeshBuilder';import type{MeshBuffers}from'./types';
+export interface TerrainRequest{size:number;resolution:number;height:(x:number,z:number)=>number;}
+export function compileTerrain(r:TerrainRequest):MeshBuffers{const b=new MeshBuilder(),n=r.resolution,ids:number[][]=[];const e=r.size/(n-1),h=r.height;for(let z=0;z<n;z++){const row:number[]=[];for(let x=0;x<n;x++){const wx=x*e-r.size/2,wz=z*e-r.size/2,y=h(wx,wz),hx=h(wx+e,wz)-h(wx-e,wz),hz=h(wx,wz+e)-h(wx,wz-e),nx=-hx,ny=2*e,nz=-hz,l=Math.max(1e-6,Math.hypot(nx,ny,nz));row.push(b.vertex(wx,y,wz,nx/l,ny/l,nz/l,x/(n-1),z/(n-1)));}ids.push(row);}for(let z=0;z<n-1;z++)for(let x=0;x<n-1;x++)b.quad(ids[z][x],ids[z][x+1],ids[z+1][x+1],ids[z+1][x]);return b.build();}
