@@ -1,29 +1,62 @@
-# Foundation checklist
+# RAVEN Foundation — 100% definition
 
-- [x] WebGL2 device and capability probe
-- [x] deterministic clock/RNG
-- [x] budgeted scheduler and jobs
-- [x] diagnostics/telemetry
-- [x] quality governor and hard watchdog ceilings
-- [x] render graph and dynamic resolution
-- [x] GPU resource lifetime primitives and render-target pooling
-- [x] GPU timing hook when supported
-- [x] projected importance / frustum visibility hooks
-- [x] sector streaming / HLOD contracts
-- [x] deterministic sector recipes and world deltas
-- [x] shared atmosphere/ecology field contracts
-- [x] procedural mesh / loft / SDF construction primitives
-- [x] SDF polygonization backend
-- [x] mesh simplification primitive for LOD baking
-- [x] compile-then-bake asset contract and memory cache
-- [x] IndexedDB persistent asset cache primitive
-- [x] layered material graph, compiler and surface-state atlas
-- [x] PBR shader/pass foundation
-- [x] skeleton / motion intent / IK / contact contracts
-- [x] skinning matrix palette and animation LOD
-- [x] worker protocol and pool
-- [x] unified engine facade
+Foundation means the contracts underneath rendering/content features are closed enough that later AAA work does not require redesigning the engine core.
 
-## Deliberately not claimed complete in v0
+## Platform and lifecycle
+- [x] Browser/platform globals isolated behind `@raven/platform`
+- [x] Injected frame clock/scheduling, storage and worker creation
+- [x] Formal created/starting/running/stopping/stopped/disposing/disposed/faulted lifecycle
+- [x] Dependency-ordered module graph with cycle/missing-dependency failure
+- [x] Service container and fault boundary
 
-RAVEN v0 is the **engine foundation**, not a finished AAA renderer. Production features such as cascaded shadow maps, temporal AO/SSR, volumetric reprojection, virtualized geometry clusters, advanced skin deformation, fracture simulation and authored-quality procedural generators are subsequent engine milestones built on these contracts.
+## Ownership and memory
+- [x] Generational handles with stale-handle rejection
+- [x] Explicit disposable resource scopes
+- [x] Byte arenas, object pools and bounded ring/queue primitives
+- [x] Budgeted reference-counted resource manager and eviction
+
+## Concurrency
+- [x] Platform worker factory; no worker construction inside core
+- [x] Extensible request protocol
+- [x] Cancellation propagation to worker requests
+- [x] Bounded queues/backpressure
+- [x] Dependency task graph and priority/deadline job scheduler
+
+## Persistence and determinism
+- [x] Engine/snapshot ABI constants
+- [x] Versioned binary writer/reader and codec contracts
+- [x] Snapshot envelope with schema/version/length/checksum
+- [x] Storage-independent snapshot store
+- [x] Deterministic ECS entity/component ordering
+- [x] Unknown component payloads are skippable
+- [x] Engine configuration is validated and platform-derived explicitly
+
+## Backend and package boundaries
+- [x] Capability-driven backend registry
+- [x] Low-level package dependency direction is machine-verified
+- [x] Browser globals forbidden in core by automated audit
+- [x] `Math.random()` forbidden in engine packages
+- [x] Game-specific benchmark vocabulary forbidden in engine packages
+- [x] Procedural-first, 3D high-fidelity identity documented
+
+## Verification
+- [x] Foundation invariant test suite
+- [x] Architecture verification script
+- [x] CI runs architecture audit, typecheck, tests and production build
+- [x] CI verifies Node 20 and Node 22
+
+## Already existing systems the foundation supports
+- [x] WebGL2 device/capabilities, render graph, target pooling and GPU timing
+- [x] Deterministic clock/RNG/scheduler/telemetry
+- [x] ECS scene extraction and unified engine facade
+- [x] Asset compile-then-bake/cache/SDF/mesh/LOD primitives
+- [x] Layered material/surface contracts
+- [x] World fields/streaming/HLOD/persistence contracts
+- [x] Skeleton/motion/IK/contact contracts
+- [x] Physics/VFX/audio/quality subsystem contracts
+
+## Explicitly NOT foundation
+
+Cascaded shadows, SSR, volumetrics, skin/cloth quality, advanced procedural generators, destruction fidelity, final physics, AI, editor UX and benchmark visuals are **feature/subsystem milestones built on the foundation**. They may be incomplete without making the foundation incomplete.
+
+**Foundation status: COMPLETE, pending green CI verification of this branch.**
