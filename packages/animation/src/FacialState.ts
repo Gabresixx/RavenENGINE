@@ -1,0 +1,3 @@
+export interface EmotionVector{focus:number;fear:number;pain:number;anger:number;fatigue:number;calm:number;}
+export interface FacialPose{browRaise:number;browFurrow:number;squint:number;blink:number;jawOpen:number;lipPress:number;mouthCorner:number;noseWrinkle:number;}
+export function emotionToFace(e:EmotionVector,blink=0):FacialPose{return{browRaise:e.fear*.35+e.pain*.2,browFurrow:e.focus*.28+e.anger*.65+e.pain*.38,squint:e.focus*.3+e.anger*.25+e.fatigue*.2,blink,jawOpen:e.fear*.18+e.fatigue*.06,lipPress:e.focus*.18+e.anger*.22, mouthCorner:e.calm*.12-e.pain*.22,noseWrinkle:e.anger*.18+e.pain*.12};}
