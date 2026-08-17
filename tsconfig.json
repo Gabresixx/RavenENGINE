@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     { "path": "./packages/platform" },
+    { "path": "./packages/serialization" },
     { "path": "./packages/math" },
     { "path": "./packages/core" },
     { "path": "./packages/renderer" },

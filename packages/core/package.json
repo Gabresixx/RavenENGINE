@@ -3,5 +3,5 @@
   "version": "0.0.1",
   "type": "module",
   "exports": "./src/index.ts",
-  "dependencies": { "@raven/platform": "workspace:*" }
+  "dependencies": { "@raven/platform": "workspace:*", "@raven/serialization": "workspace:*" }
 }
