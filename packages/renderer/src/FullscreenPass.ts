@@ -1,0 +1,3 @@
+import{ShaderProgram}from'./ShaderProgram';
+export const fullscreenVertex=`#version 300 es\nprecision highp float;out vec2 vUv;void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);vUv=p;gl_Position=vec4(p*2.0-1.0,0.0,1.0);}`;
+export abstract class FullscreenPass{readonly program:ShaderProgram;private vao:WebGLVertexArrayObject;constructor(readonly gl:WebGL2RenderingContext,fragment:string){this.program=new ShaderProgram(gl,fullscreenVertex,fragment);const vao=gl.createVertexArray();if(!vao)throw new Error('Failed to allocate fullscreen VAO');this.vao=vao;}protected draw():void{this.gl.bindVertexArray(this.vao);this.gl.drawArrays(this.gl.TRIANGLES,0,3);this.gl.bindVertexArray(null);}dispose():void{this.gl.deleteVertexArray(this.vao);this.program.dispose();}}
