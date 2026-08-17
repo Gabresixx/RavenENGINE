@@ -34,7 +34,7 @@ Foundation means the contracts underneath rendering/content features are closed 
 ## Backend and package boundaries
 - [x] Capability-driven backend registry
 - [x] Low-level package dependency direction is machine-verified
-- [x] Browser globals forbidden in core by automated audit
+- [x] Browser/time globals forbidden in core by automated audit
 - [x] `Math.random()` forbidden in engine packages
 - [x] Game-specific benchmark vocabulary forbidden in engine packages
 - [x] Procedural-first, 3D high-fidelity identity documented
@@ -44,6 +44,8 @@ Foundation means the contracts underneath rendering/content features are closed 
 - [x] Architecture verification script
 - [x] CI runs architecture audit, typecheck, tests and production build
 - [x] CI verifies Node 20 and Node 22
+- [x] Workspace package aliases are explicit in tests
+- [x] Foundation gate has passed end-to-end on both CI matrix targets
 
 ## Already existing systems the foundation supports
 - [x] WebGL2 device/capabilities, render graph, target pooling and GPU timing
@@ -59,4 +61,6 @@ Foundation means the contracts underneath rendering/content features are closed 
 
 Cascaded shadows, SSR, volumetrics, skin/cloth quality, advanced procedural generators, destruction fidelity, final physics, AI, editor UX and benchmark visuals are **feature/subsystem milestones built on the foundation**. They may be incomplete without making the foundation incomplete.
 
-**Foundation status: COMPLETE, pending green CI verification of this branch.**
+# Foundation status: **100% VERIFIED**
+
+The foundation gate is mandatory for every future change. A later commit that breaks architecture audit, TypeScript integrity, tests or production build is not eligible for integration until the gate is green again.
