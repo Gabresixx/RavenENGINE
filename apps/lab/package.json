@@ -1,0 +1,1 @@
+{"name":"@raven/lab","private":true,"version":"0.0.1","type":"module","dependencies":{"@raven/core":"workspace:*","@raven/renderer":"workspace:*","@raven/quality":"workspace:*"}}
