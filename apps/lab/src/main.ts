@@ -1,7 +1,7 @@
-import{Raven,GpuMesh,sampleSdf,sphere,smoothUnion,polygonizeSdf}from'@raven/engine';
+import{Raven,GpuMesh,sampleSdf,sphere,smoothUnion,polygonizeSdf,quatFromAxisAngle}from'@raven/engine';
 const host=document.querySelector<HTMLDivElement>('#app')!;const canvas=document.createElement('canvas');host.appendChild(canvas);const raven=new Raven({canvas,targetFps:60});
-const form=smoothUnion(sphere(-.34,0,0,.72),sphere(.34,0,0,.72),.38);const volume=sampleSdf(form,{min:[-1.25,-1.05,-1.05],max:[1.25,1.05,1.05],resolution:18});const cpuMesh=polygonizeSdf(volume);const mesh=new GpuMesh(raven.pipeline.sceneRenderer.gl,cpuMesh);
+const form=smoothUnion(sphere(-.34,0,0,.72),sphere(.34,0,0,.72),.38);const volume=sampleSdf(form,{min:[-1.25,-1.05,-1.05],max:[1.25,1.05,1.05],resolution:18});const cpuMesh=polygonizeSdf(volume);const mesh=new GpuMesh(raven.renderer.gl,cpuMesh);
 const entity=raven.scene.create();raven.scene.renderables.set(entity,{mesh,material:{baseColor:[.28,.34,.29],roughness:.72,metalness:0},visible:true,castsShadow:true});
-const camera=raven.scene.create();raven.scene.cameras.set(camera,{position:[0,.15,3.4],target:[0,0,0],up:[0,1,0],fovY:Math.PI/3,near:.05,far:100,aspect:1});
-let previous=performance.now();const frame=(now:number)=>{const dt=now-previous;previous=now;const rect=canvas.getBoundingClientRect(),cam=raven.scene.cameras.get(camera)!;cam.aspect=Math.max(.001,rect.width/rect.height);const t=raven.scene.transforms.get(entity)!;t.rotation=[0,Math.sin(now*.00018)*.22,0,Math.sqrt(Math.max(0,1-Math.pow(Math.sin(now*.00018)*.22,2)))];t.dirty=true;const stats=raven.pipeline.frame(camera,dt,rect.width,rect.height,Math.min(devicePixelRatio,2));raven.runtime.telemetry.current.drawCalls=stats.drawCalls;raven.runtime.telemetry.current.triangles=stats.triangles;raven.runtime.telemetry.current.renderScale=stats.renderScale;requestAnimationFrame(frame);};requestAnimationFrame(frame);
-window.addEventListener('beforeunload',()=>{mesh.dispose();raven.dispose();});
+const camera=raven.scene.create();raven.scene.cameras.set(camera,{position:[0,.15,3.4],target:[0,0,0],up:[0,1,0],fovY:Math.PI/3,near:.05,far:100,aspect:1});raven.setActiveCamera(camera);
+raven.runtime.scheduler.register({id:'lab.rotate',cadenceHz:60,priority:100,estimatedCostMs:.02,run:frame=>{const t=raven.scene.transforms.get(entity)!;t.rotation=quatFromAxisAngle([0,1,0],frame.elapsedMs*.00025);t.dirty=true;}});
+raven.start();window.addEventListener('beforeunload',()=>{mesh.dispose();raven.dispose();});
