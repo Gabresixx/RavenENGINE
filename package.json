@@ -1,0 +1,20 @@
+{
+  "name": "raven-engine",
+  "private": true,
+  "version": "0.0.1",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "build": "tsc -b && vite build",
+    "dev": "vite",
+    "typecheck": "tsc -b --pretty false",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "bench": "vitest bench"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8"
+  }
+}

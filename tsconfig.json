@@ -1,0 +1,12 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/renderer" },
+    { "path": "./packages/world" },
+    { "path": "./packages/assets" },
+    { "path": "./packages/animation" },
+    { "path": "./packages/quality" },
+    { "path": "./apps/lab" }
+  ]
+}
