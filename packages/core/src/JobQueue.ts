@@ -1,17 +1,2 @@
-export interface BudgetedJob<T=unknown> { id:string; priority:number; estimatedCostMs:number; run(signal:AbortSignal):Promise<T>|T; }
-
-export class JobQueue {
-  private queue:BudgetedJob[]=[];
-  enqueue(job:BudgetedJob):void{this.queue.push(job);this.queue.sort((a,b)=>b.priority-a.priority);}
-  get length():number{return this.queue.length;}
-
-  async drainBudget(budgetMs:number,signal=new AbortController().signal):Promise<number>{
-    const start=performance.now(); let completed=0;
-    while(this.queue.length){
-      const next=this.queue[0];
-      if(performance.now()-start+next.estimatedCostMs>budgetMs)break;
-      this.queue.shift(); await next.run(signal); completed++;
-    }
-    return completed;
-  }
-}
+export interface BudgetedJob<T=unknown>{id:string;priority:number;estimatedCostMs:number;run(signal:AbortSignal):Promise<T>|T;}
+export class JobQueue{private queue:BudgetedJob[]=[];enqueue(job:BudgetedJob):void{if(!Number.isFinite(job.estimatedCostMs)||job.estimatedCostMs<0)throw new RangeError('estimatedCostMs must be finite and non-negative');this.queue.push(job);this.queue.sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id));}get length():number{return this.queue.length;}async drainBudget(budgetMs:number,signal=new AbortController().signal):Promise<number>{if(!Number.isFinite(budgetMs)||budgetMs<0)throw new RangeError('budgetMs must be finite and non-negative');let spent=0,completed=0;while(this.queue.length){if(signal.aborted)break;const next=this.queue[0];if(spent+next.estimatedCostMs>budgetMs)break;this.queue.shift();await next.run(signal);spent+=next.estimatedCostMs;completed++;}return completed;}}
