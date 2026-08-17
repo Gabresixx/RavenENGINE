@@ -5,6 +5,7 @@
     { "path": "./packages/renderer" },
     { "path": "./packages/world" },
     { "path": "./packages/assets" },
+    { "path": "./packages/materials" },
     { "path": "./packages/animation" },
     { "path": "./packages/quality" },
     { "path": "./apps/lab" }

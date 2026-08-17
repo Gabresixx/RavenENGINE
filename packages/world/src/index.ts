@@ -3,3 +3,6 @@ export * from './Sector';
 export * from './Surface';
 export * from './ProjectedImportance';
 export * from './StreamingManager';
+export * from './AtmosphereFields';
+export * from './Hlod';
+export * from './Persistence';

@@ -6,3 +6,4 @@ export * from './Engine';
 export * from './JobQueue';
 export * from './WorkerProtocol';
 export * from './FrameGovernor';
+export * from './Diagnostics';
