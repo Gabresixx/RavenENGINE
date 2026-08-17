@@ -6,3 +6,5 @@ export * from './StreamingManager';
 export * from './AtmosphereFields';
 export * from './Hlod';
 export * from './Persistence';
+export * from './SectorGenerator';
+export * from './Ecology';

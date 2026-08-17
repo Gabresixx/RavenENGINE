@@ -6,3 +6,6 @@ export * from './ShaderProgram';
 export * from './ResourceRegistry';
 export * from './ScenePacket';
 export * from './Renderer';
+export * from './RenderTargetPool';
+export * from './Visibility';
+export * from './GpuTimer';

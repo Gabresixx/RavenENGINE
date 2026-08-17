@@ -1,0 +1,25 @@
+# Foundation checklist
+
+- [x] WebGL2 device and capability probe
+- [x] deterministic clock/RNG
+- [x] budgeted scheduler and jobs
+- [x] diagnostics/telemetry
+- [x] quality governor and hard watchdog ceilings
+- [x] render graph and dynamic resolution
+- [x] GPU resource lifetime primitives
+- [x] render target pooling
+- [x] projected importance / visibility hooks
+- [x] sector streaming / HLOD contracts
+- [x] deterministic sector recipes and world deltas
+- [x] shared atmosphere/ecology field contracts
+- [x] procedural mesh / loft / SDF construction primitives
+- [x] compile-then-bake asset contract and cache
+- [x] layered material graph and surface-state atlas
+- [x] skeleton / motion intent / IK / contact contracts
+- [x] worker protocol and pool
+- [x] unified engine facade
+- [ ] production render passes (depth, opaque PBR, shadows, AO, SSR, volumetrics)
+- [ ] adaptive geometry simplifier / HLOD baker
+- [ ] full SDF polygonizer
+- [ ] production character skinning/deformation backend
+- [ ] IndexedDB persistent cache backend

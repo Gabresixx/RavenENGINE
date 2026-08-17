@@ -8,6 +8,7 @@
     { "path": "./packages/materials" },
     { "path": "./packages/animation" },
     { "path": "./packages/quality" },
+    { "path": "./packages/engine" },
     { "path": "./apps/lab" }
   ]
 }
