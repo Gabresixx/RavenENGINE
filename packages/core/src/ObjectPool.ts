@@ -1,0 +1,1 @@
+export class ObjectPool<T>{private readonly free:T[]=[];constructor(private readonly factory:()=>T,private readonly reset?:(value:T)=>void){}acquire():T{return this.free.pop()??this.factory();}release(value:T):void{this.reset?.(value);this.free.push(value);}get available():number{return this.free.length;}}

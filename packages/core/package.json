@@ -2,5 +2,6 @@
   "name": "@raven/core",
   "version": "0.0.1",
   "type": "module",
-  "exports": "./src/index.ts"
+  "exports": "./src/index.ts",
+  "dependencies": { "@raven/platform": "workspace:*" }
 }

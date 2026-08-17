@@ -1,0 +1,2 @@
+import type { KeyValueStore } from './Platform';
+export class MemoryStore implements KeyValueStore { private readonly data=new Map<string,Uint8Array>(); async get(key:string):Promise<Uint8Array|undefined>{const v=this.data.get(key);return v?.slice();} async set(key:string,value:Uint8Array):Promise<void>{this.data.set(key,value.slice());} async delete(key:string):Promise<void>{this.data.delete(key);} async clear():Promise<void>{this.data.clear();} }

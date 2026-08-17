@@ -1,0 +1,1 @@
+export function fnv1a32(input:string|Uint8Array):number{const bytes=typeof input==='string'?new TextEncoder().encode(input):input;let h=0x811c9dc5;for(const b of bytes){h^=b;h=Math.imul(h,0x01000193);}return h>>>0;}export function stableId(namespace:string,name:string):string{return `${namespace}:${fnv1a32(`${namespace}\0${name}`).toString(16).padStart(8,'0')}`;}

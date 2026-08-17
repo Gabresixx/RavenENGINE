@@ -1,6 +1,7 @@
 {
   "files": [],
   "references": [
+    { "path": "./packages/platform" },
     { "path": "./packages/math" },
     { "path": "./packages/core" },
     { "path": "./packages/renderer" },
