@@ -1,1 +1,1 @@
-{"name":"@raven/lab","private":true,"version":"0.0.1","type":"module","dependencies":{"@raven/engine":"workspace:*"}}
+{"name":"@raven/lab","private":true,"version":"0.0.1","type":"module","dependencies":{"@raven/engine":"workspace:*","@raven/renderer":"workspace:*","@raven/assets":"workspace:*","@raven/math":"workspace:*"}}
