@@ -9,3 +9,6 @@ export * from './Renderer';
 export * from './RenderTargetPool';
 export * from './Visibility';
 export * from './GpuTimer';
+export * from './PbrShaders';
+export * from './PbrPass';
+export * from './PassBudget';

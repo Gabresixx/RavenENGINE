@@ -4,3 +4,5 @@ export * from './MotionIntent';
 export * from './ContactSolver';
 export * from './TwoBoneIk';
 export * from './MotionField';
+export * from './SkinningPalette';
+export * from './AnimationLod';

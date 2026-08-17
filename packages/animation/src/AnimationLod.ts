@@ -1,0 +1,2 @@
+export interface AnimationLodDecision { updateHz:60|30|15|10; fullIk:boolean; facial:boolean; secondaryMotion:boolean; }
+export function chooseAnimationLod(importance:number,hero=false):AnimationLodDecision{const p=importance*(hero?2:1);if(p>0.18)return{updateHz:60,fullIk:true,facial:true,secondaryMotion:true};if(p>0.06)return{updateHz:30,fullIk:true,facial:false,secondaryMotion:true};if(p>0.015)return{updateHz:15,fullIk:false,facial:false,secondaryMotion:false};return{updateHz:10,fullIk:false,facial:false,secondaryMotion:false};}

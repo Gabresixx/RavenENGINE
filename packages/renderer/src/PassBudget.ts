@@ -1,0 +1,2 @@
+export interface PassBudget { name:string; scale:number; maxMs:number; enabled:boolean; }
+export class PassBudgetController { readonly passes=new Map<string,PassBudget>();register(b:PassBudget):this{this.passes.set(b.name,b);return this;}degrade(name:string,amount=.1,min=.25):void{const p=this.passes.get(name);if(p)p.scale=Math.max(min,p.scale-amount);}recover(name:string,amount=.025):void{const p=this.passes.get(name);if(p)p.scale=Math.min(1,p.scale+amount);}}

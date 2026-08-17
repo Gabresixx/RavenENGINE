@@ -5,3 +5,6 @@ export * from './AssetCompiler';
 export * from './HardSurface';
 export * from './Architecture';
 export * from './ImplicitSurface';
+export * from './SdfPolygonizer';
+export * from './MeshSimplifier';
+export * from './PersistentAssetCache';
