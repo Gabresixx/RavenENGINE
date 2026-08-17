@@ -1,13 +1,4 @@
-export type WorkerRequest = { id:number; kind:'compile-asset'|'compile-texture'|'generate-sector'; payload:unknown };
-export type WorkerResponse = { id:number; ok:true; payload:unknown } | { id:number; ok:false; error:string };
-
-export class WorkerClient {
-  private nextId=1;
-  private pending=new Map<number,{resolve:(v:unknown)=>void;reject:(e:unknown)=>void}>();
-  constructor(readonly worker:Worker){ worker.onmessage=e=>this.receive(e.data as WorkerResponse); }
-  request<T>(kind:WorkerRequest['kind'],payload:unknown,transfer:Transferable[]=[]):Promise<T>{
-    const id=this.nextId++;
-    return new Promise<T>((resolve,reject)=>{this.pending.set(id,{resolve:v=>resolve(v as T),reject});this.worker.postMessage({id,kind,payload} satisfies WorkerRequest,transfer);});
-  }
-  private receive(msg:WorkerResponse){const p=this.pending.get(msg.id);if(!p)return;this.pending.delete(msg.id);msg.ok?p.resolve(msg.payload):p.reject(new Error(msg.error));}
-}
+import type { WorkerPort } from '@raven/platform';import type { CancellationToken } from './Cancellation';
+export type WorkerRequest={id:number;kind:string;payload:unknown}|{id:number;kind:'$cancel';payload:{targetId:number}};export type WorkerResponse={id:number;ok:true;payload:unknown}|{id:number;ok:false;error:string};
+interface Pending{resolve:(v:unknown)=>void;reject:(e:unknown)=>void;unsubscribe?:()=>void;}
+export class WorkerClient{private nextId=1;private pending=new Map<number,Pending>();private disposed=false;constructor(readonly worker:WorkerPort){worker.onmessage=e=>this.receive(e.data as WorkerResponse);worker.onerror=e=>this.failAll(new Error(e.message||'Worker error'));}request<T>(kind:string,payload:unknown,options:{transfer?:Transferable[];token?:CancellationToken}={}):Promise<T>{if(this.disposed)return Promise.reject(new Error('WorkerClient disposed'));const id=this.nextId++;return new Promise<T>((resolve,reject)=>{const pending:Pending={resolve:v=>resolve(v as T),reject};if(options.token){if(options.token.isCancelled){reject(options.token.reason);return;}pending.unsubscribe=options.token.onCancel(reason=>{this.worker.postMessage({id:this.nextId++,kind:'$cancel',payload:{targetId:id}} satisfies WorkerRequest);this.pending.delete(id);reject(reason);});}this.pending.set(id,pending);this.worker.postMessage({id,kind,payload} satisfies WorkerRequest,options.transfer);});}private receive(msg:WorkerResponse):void{const p=this.pending.get(msg.id);if(!p)return;this.pending.delete(msg.id);p.unsubscribe?.();msg.ok?p.resolve(msg.payload):p.reject(new Error(msg.error));}private failAll(error:Error):void{for(const p of this.pending.values()){p.unsubscribe?.();p.reject(error);}this.pending.clear();}dispose():void{if(this.disposed)return;this.disposed=true;this.failAll(new Error('WorkerClient disposed'));this.worker.terminate();}}
