@@ -61,6 +61,8 @@ Foundation means the contracts underneath rendering/content features are closed 
 
 Cascaded shadows, SSR, volumetrics, skin/cloth quality, advanced procedural generators, destruction fidelity, final physics, AI, editor UX and benchmark visuals are **feature/subsystem milestones built on the foundation**. They may be incomplete without making the foundation incomplete.
 
-# Foundation status: **100% VERIFIED**
+# Foundation status: **100% VERIFIED / FROZEN**
+
+This branch is the frozen Foundation baseline. Frozen means the verified contracts above are no longer open-ended implementation work: feature milestones must build on them instead of casually redesigning them. A foundation contract may change only through an explicit architectural change with an ADR, migration/compatibility plan where required, updated tests, and the complete Node 20/22 foundation gate green again.
 
 The foundation gate is mandatory for every future change. A later commit that breaks architecture audit, TypeScript integrity, tests or production build is not eligible for integration until the gate is green again.
