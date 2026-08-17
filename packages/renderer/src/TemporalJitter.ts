@@ -1,0 +1,3 @@
+export function halton(index:number,base:number):number{if(index<1||base<2)throw new RangeError('Invalid Halton sequence arguments');let f=1,r=0,i=Math.floor(index);while(i>0){f/=base;r+=f*(i%base);i=Math.floor(i/base);}return r;}
+export function temporalJitter(frame:number,width:number,height:number):[number,number]{if(width<1||height<1)throw new RangeError('Invalid temporal jitter dimensions');const i=(Math.floor(frame)%8)+1;return[(halton(i,2)-.5)*2/width,(halton(i,3)-.5)*2/height];}
+export function jitterViewProjection(viewProj:Float32Array,jitter:[number,number]):Float32Array{const out=new Float32Array(viewProj);for(let c=0;c<4;c++){const row3=viewProj[c*4+3];out[c*4]+=jitter[0]*row3;out[c*4+1]+=jitter[1]*row3;}return out;}
